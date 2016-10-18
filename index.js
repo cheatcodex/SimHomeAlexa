@@ -1,7 +1,7 @@
 'use strict';
 var Alexa = require('alexa-sdk');
 
-var APP_ID = 'amzn1.ask.skill.5eaf9810-5379-4ef5-93e9-b9e86aa5a765'; //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
+ //OPTIONAL: replace with "amzn1.echo-sdk-ams.app.[your-unique-value-here]";
 var SKILL_NAME = 'SimHomeQA';
 
 /**
@@ -25,32 +25,33 @@ var SpringSummerTips = [
     "On hot days, avoid using the oven; cook on the stove, use a microwave oven, or grill outside.",
     "Take advantage of daylight instead of artificial lighting, but avoid direct sunlight.",
     "Wash only full loads of dishes and clothes. Consider air drying both dishes and clothing.",
+    "Take short showers instead of baths.",
+    "Minimize activities that generate a lot of heat, such as running a computer, burning open flames, running a dishwasher, and using hot devices such as curling irons or hair dryers. Even stereos and televisions will add some heat to your home.",
+    "KEEP HOT AIR FROM LEAKING INTO YOUR HOME",
+    "Water heating accounts for about 18% of the energy consumed in your home. Turn down the temperature of your water heater to the warm setting (120°F). You'll not only save energy, you'll avoid scalding your hands.",
 ];
 var FallWinterTips = [
     "Take advantage of daylight instead of artificial lighting.",
+    "TAKE ADVANTAGE OF HEAT FROM THE SUN",
+    "Open curtains on your south-facing windows during the day to allow sunlight to naturally heat your home, and close them at night to reduce the chill you may feel from cold windows.",
     "Wash only full loads of dishes and clothes. Consider air drying both dishes and clothing.",
+    "KEEP cold AIR FROM LEAKING INTO YOUR HOME",
+    "When you are asleep or out of the house, turn your thermostat back 10° to 15° for eight hours and save around 10% a year on your heating and cooling bills. A programmable thermostat can make it easy to set back your temperature.",
+    "Wood-burning fireplaces are now illegal in California, MAINTAIN YOUR gas or electric HEATING SYSTEMS.",
+    "Use light-emitting diode -- or L E D -- holiday light strings to reduce the cost of decorating your home for the winter holidays.",
 ];
-var FACTS = [
-    "A year on Mercury is just 88 days long.",
-    "Despite being farther from the Sun, Venus experiences higher temperatures than Mercury.",
-    "Venus rotates counter-clockwise, possibly because of a collision in the past with an asteroid.",
-    "On Mars, the Sun appears about half the size as it does on Earth.",
-    "Earth is the only planet not named after a god.",
-    "Jupiter has the shortest day of all the planets.",
-    "The Milky Way galaxy will collide with the Andromeda Galaxy in about 5 billion years.",
-    "The Sun contains 99.86% of the mass in the Solar System.",
-    "The Sun is an almost perfect sphere.",
-    "A total solar eclipse can happen once every 1 to 2 years. This makes them a rare event.",
-    "Saturn radiates two and a half times more energy into space than it receives from the sun.",
-    "The temperature inside the Sun can reach 15 million degrees Celsius.",
-    "The Moon is moving approximately 3.8 cm away from our planet every year."
-];
+
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.appId = APP_ID;
     alexa.registerHandlers(handlers);
     alexa.execute();
+};
+
+var states = {
+    MOREMODE: '_MODE', // User is trying to guess the number.
+    STARTMODE: '_STARTMODE'  // Prompt the user to start or restart the game.
 };
 
 var handlers = {
@@ -69,11 +70,11 @@ var handlers = {
         if(d<9 && d>4){
             var factIndex = Math.floor(Math.random() * SpringSummerTips.length);
             randomFact = SpringSummerTips[factIndex];
-            season = "spring and summer."
+            season = "spring and summer..."
         }else{
             var factIndex = Math.floor(Math.random() * FallWinterTips.length);
             randomFact = FallWinterTips[factIndex];
-            season = "fall and winter."
+            season = "fall and winter..."
         }
 
         // Create speech output
